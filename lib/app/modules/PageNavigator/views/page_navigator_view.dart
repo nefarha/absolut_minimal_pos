@@ -37,7 +37,7 @@ class PageNavigatorView extends GetView<PageNavigatorController> {
         labelType: NavigationRailLabelType.all,
         onDestinationSelected: (value) => controller.setRailIndex = value,
         selectedIndex: controller.railIndex.value,
-        destinations: [
+        destinations: const [
           NavigationRailDestination(
             icon: Icon(Icons.home),
             label: Text("Home"),
