@@ -1,89 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:faker/faker.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
+import 'package:minimal_pos/app/modules/home/controllers/home_controller.dart';
 
-final _faker = Faker();
-
-class HomePageItem extends StatelessWidget {
+class HomePageItem extends GetView<HomeController> {
   const HomePageItem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        scrollDirection: Axis.horizontal,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          crossAxisCount: 2,
-        ),
-        itemBuilder: (context, index) {
-          String categoryName = _faker.food.cuisine();
-          String itemName = _faker.food.dish();
-          int itemPrice = _faker.currency.random.integer(200, min: 1);
-          return Card(
-            child: Container(
-              height: 100,
-              width: 200,
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    categoryName,
-                    style: Get.textTheme.bodySmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    itemName,
-                    style: Get.textTheme.titleLarge,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    "\$$itemPrice",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: actionColor,
-                        ),
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.remove,
-                          color: secondaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: actionColor,
-                        ),
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.add,
-                          color: secondaryColor,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+    return controller.obx(
+      (itemBox) => ValueListenableBuilder(
+        valueListenable: itemBox!.listenable(),
+        builder: (context, value, child) => Expanded(
+          child: GridView(
+            scrollDirection: Axis.horizontal,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              crossAxisCount: 2,
             ),
-          );
-        },
+            children: itemBox!.values
+                .map(
+                  (item) => Card(
+                    child: Container(
+                      height: 100,
+                      width: 200,
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.category,
+                            style: Get.textTheme.bodySmall,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text(
+                            item.name,
+                            style: Get.textTheme.titleLarge,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "\$${item.price}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: actionColor,
+                                ),
+                                onPressed: () {},
+                                child: Icon(
+                                  Icons.remove,
+                                  color: secondaryColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: actionColor,
+                                ),
+                                onPressed: () {},
+                                child: Icon(
+                                  Icons.add,
+                                  color: secondaryColor,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ),
+      onLoading: Center(
+        child: Column(
+          children: const [
+            CircularProgressIndicator(
+              color: actionColor,
+              strokeWidth: 10,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+                'Reading data from local database, please wait, if this happen, you have potato device or something went wrong/')
+          ],
+        ),
       ),
     );
   }

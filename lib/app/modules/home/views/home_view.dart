@@ -10,8 +10,6 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   HomeView({Key? key}) : super(key: key);
 
-  final _faker = Faker();
-
   @override
   Widget build(BuildContext context) {
     return Padding(
