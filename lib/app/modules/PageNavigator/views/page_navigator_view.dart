@@ -13,8 +13,7 @@ class PageNavigatorView extends GetView<PageNavigatorController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PageNavigatorView'),
-        centerTitle: true,
+        title: const Text('Local POS'),
         elevation: 0,
         surfaceTintColor: secondaryColor,
       ),
@@ -23,7 +22,9 @@ class PageNavigatorView extends GetView<PageNavigatorController> {
         () => Row(
           children: [
             buildRailNavigator(),
-            Flexible(child: HomeView()),
+            Flexible(
+              child: controller.pageMenu[controller.railIndex.value],
+            ),
             if (controller.railIndex.value == 0) NavigatorSideBar(),
           ],
         ),
