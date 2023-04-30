@@ -14,10 +14,10 @@ class ProductItem extends GetView<ItemController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-      (itemBox) => (itemBox!.length > 0)
-          ? ValueListenableBuilder(
-              valueListenable: itemBox.listenable(),
-              builder: (context, value, child) => SizedBox(
+      (itemBox) => ValueListenableBuilder(
+        valueListenable: itemBox!.listenable(),
+        builder: (context, value, child) => (value.length > 0)
+            ? SizedBox(
                 width: Get.width,
                 child: SingleChildScrollView(
                   // This Widget will Show Data on your Database
@@ -86,14 +86,14 @@ class ProductItem extends GetView<ItemController> {
                     }),
                   ),
                 ),
+              )
+            : Center(
+                child: Text(
+                  "No Item or Data in Database",
+                  style: Get.textTheme.headlineLarge,
+                ),
               ),
-            )
-          : Center(
-              child: Text(
-                "No Item or Data in Database",
-                style: Get.textTheme.headlineLarge,
-              ),
-            ),
+      ),
       onLoading: Center(
         child: Column(
           children: const [

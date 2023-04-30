@@ -10,10 +10,10 @@ class HomePageItem extends GetView<ItemController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-      (itemBox) => (itemBox!.length > 0)
-          ? ValueListenableBuilder(
-              valueListenable: itemBox.listenable(),
-              builder: (context, value, child) => Expanded(
+      (itemBox) => ValueListenableBuilder(
+        valueListenable: itemBox!.listenable(),
+        builder: (context, value, child) => (value.length > 0)
+            ? Expanded(
                 child: GridView(
                   scrollDirection: Axis.horizontal,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -87,14 +87,14 @@ class HomePageItem extends GetView<ItemController> {
                       )
                       .toList(),
                 ),
+              )
+            : Center(
+                child: Text(
+                  "No Item or Data in Database",
+                  style: Get.textTheme.headlineLarge,
+                ),
               ),
-            )
-          : Center(
-              child: Text(
-                "No Item or Data in Database",
-                style: Get.textTheme.headlineLarge,
-              ),
-            ),
+      ),
       onLoading: Center(
         child: Column(
           children: const [

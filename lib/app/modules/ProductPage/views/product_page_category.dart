@@ -9,38 +9,44 @@ class ProductCategory extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-      (box) => (box!.length > 0)
-          ? ValueListenableBuilder(
-              valueListenable: box.listenable(),
-              builder: (context, value, child) => SizedBox(
+      (box) => ValueListenableBuilder(
+        valueListenable: box!.listenable(),
+        builder: (context, value, child) => (value.length > 0)
+            ? SizedBox(
                 height: 60,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: box.length,
                   itemBuilder: (context, index) {
                     String categoryName = box.getAt(index);
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Center(
-                          child: Text(
-                            categoryName,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                    return GestureDetector(
+                      onTap: () {
+                        controller.deleteCategory(
+                            catName: categoryName, index: index);
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Center(
+                            child: Text(
+                              categoryName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                       ),
                     );
                   },
                 ),
+              )
+            : Center(
+                child: Text(
+                  "No Item or Data in Database",
+                  style: Get.textTheme.headlineLarge,
+                ),
               ),
-            )
-          : Center(
-              child: Text(
-                "No Item or Data in Database",
-                style: Get.textTheme.headlineLarge,
-              ),
-            ),
+      ),
     );
   }
 }

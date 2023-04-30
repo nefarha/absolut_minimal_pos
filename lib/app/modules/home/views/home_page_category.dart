@@ -10,10 +10,10 @@ class HomeCategory extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-      (box) => (box!.length > 0)
-          ? ValueListenableBuilder(
-              valueListenable: box.listenable(),
-              builder: (context, value, child) => SizedBox(
+      (box) => ValueListenableBuilder(
+        valueListenable: box!.listenable(),
+        builder: (context, value, child) => (value.length > 0)
+            ? SizedBox(
                 height: 130,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -41,9 +41,14 @@ class HomeCategory extends GetView<CategoryController> {
                     );
                   },
                 ),
+              )
+            : Center(
+                child: Text(
+                  "No Item or Data in Database",
+                  style: Get.textTheme.headlineLarge,
+                ),
               ),
-            )
-          : Text("No Data"),
+      ),
     );
   }
 }
