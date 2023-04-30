@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
-import 'package:minimal_pos/app/modules/PageNavigator/controllers/page_navigator_controller.dart';
+import 'package:minimal_pos/app/data/model/item_model.dart';
+import 'package:minimal_pos/app/modules/home/controllers/home_controller.dart';
 
-class NavigatorSideBar extends GetView<PageNavigatorController> {
+class NavigatorSideBar extends GetView<HomeController> {
   NavigatorSideBar({super.key});
 
   @override
@@ -11,28 +12,36 @@ class NavigatorSideBar extends GetView<PageNavigatorController> {
     return SizedBox(
       width: 300,
       height: Get.height,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
+      child: Obx(
+        () => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // THIS SECTION IS FOR ITEM ON ORDER
             Flexible(
               child: Card(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => Divider(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) => ListTile(
-                    title: Text(
-                      "Nama Makanan",
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Rp.80000 x 2"),
-                        Text("Rp.160000"),
-                      ],
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(),
+                    itemCount: controller.cartList.length,
+                    itemBuilder: (context, index) {
+                      ItemModel item =
+                          controller.cartList.keys.elementAt(index);
+                      int totalItem =
+                          controller.cartList.values.elementAt(index);
+                      return ListTile(
+                        title: Text(
+                          item.name,
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${item.price} x $totalItem"),
+                            Text("${item.price * totalItem}"),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -50,14 +59,16 @@ class NavigatorSideBar extends GetView<PageNavigatorController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Subtotal', style: Get.textTheme.bodyLarge),
-                        Text('Rp.1000', style: Get.textTheme.bodyLarge),
+                        Text(controller.subtotalCart.toString(),
+                            style: Get.textTheme.bodyLarge),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Tax', style: Get.textTheme.bodyLarge),
-                        Text('Rp.100', style: Get.textTheme.bodyLarge),
+                        Text('Tax 10%', style: Get.textTheme.bodyLarge),
+                        Text(controller.getTax.toString(),
+                            style: Get.textTheme.bodyLarge),
                       ],
                     ),
                     Divider(
@@ -67,7 +78,7 @@ class NavigatorSideBar extends GetView<PageNavigatorController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Total'),
-                        Text('Rp.1100'),
+                        Text(controller.totalPrice.toString()),
                       ],
                     ),
                   ],

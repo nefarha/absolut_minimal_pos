@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
-import 'package:minimal_pos/app/modules/PageNavigator/views/NavigatorSideBar.dart';
 
 import '../controllers/page_navigator_controller.dart';
 
@@ -24,7 +23,6 @@ class PageNavigatorView extends GetView<PageNavigatorController> {
             Flexible(
               child: controller.pageMenu[controller.railIndex.value],
             ),
-            if (controller.railIndex.value == 0) NavigatorSideBar(),
           ],
         ),
       ),

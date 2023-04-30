@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:minimal_pos/app/controllers/item_controller.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:minimal_pos/app/modules/home/controllers/home_controller.dart';
 
 class HomePageItem extends GetView<ItemController> {
-  const HomePageItem({super.key});
+  HomePageItem({super.key});
+
+  final homeC = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class HomePageItem extends GetView<ItemController> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // SHOW ITEM CATEGORY ON TOP
                                 Text(
                                   item.category,
                                   style: Get.textTheme.bodySmall,
@@ -40,26 +44,32 @@ class HomePageItem extends GetView<ItemController> {
                                 SizedBox(
                                   height: 40,
                                 ),
+                                // THIS IS ITEM NAME
                                 Text(
                                   item.name,
                                   style: Get.textTheme.titleLarge,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
+                                // THIS IS ITEM PRICE
                                 Text(
                                   "\$${item.price}",
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Spacer(),
+                                // THIS IS ACTION BUTTON ON ITEM CARD
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    // THIS IS FOR SUBSTRACT OR REMOVE ITEM FROM CART
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: actionColor,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        homeC.removeFromCart(item);
+                                      },
                                       child: Icon(
                                         Icons.remove,
                                         color: secondaryColor,
@@ -68,11 +78,14 @@ class HomePageItem extends GetView<ItemController> {
                                     SizedBox(
                                       width: 10,
                                     ),
+                                    // THIS IS FOR ADDING ITEM TO CART
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: actionColor,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        homeC.addCart(item);
+                                      },
                                       child: Icon(
                                         Icons.add,
                                         color: secondaryColor,

@@ -62,7 +62,7 @@ class ItemController extends GetxController with StateMixin<Box<ItemModel>> {
             ItemModel item = ItemModel(
                 name: nameC.text,
                 price: int.parse(priceC.text),
-                category: selected.value!);
+                category: selected.value);
             itemBox.value!.add(item);
             Get.back();
           }
