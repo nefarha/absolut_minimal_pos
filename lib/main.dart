@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'package:minimal_pos/app/controllers/category_controller.dart';
 import 'package:minimal_pos/app/controllers/item_controller.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
 import 'package:minimal_pos/app/data/model/item_model.dart';
@@ -22,15 +23,17 @@ void main() async {
 
   // open box for database
   await Hive.openBox<ItemModel>("itemBox");
+  await Hive.openBox("categoryBox");
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+  final itemController = Get.put(ItemController());
+  final categoryController = Get.put(CategoryController());
   final homeContoller = Get.put(HomeController());
   final productContoller = Get.put(ProductPageController());
-  final itemController = Get.put(ItemController());
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
 import 'package:minimal_pos/app/modules/PageNavigator/views/NavigatorSideBar.dart';
-import 'package:minimal_pos/app/modules/home/views/home_view.dart';
 
 import '../controllers/page_navigator_controller.dart';
 

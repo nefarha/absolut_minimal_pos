@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
+import 'package:minimal_pos/app/data/model/item_model.dart';
 import 'package:minimal_pos/app/modules/ProductPage/views/product_page_category.dart';
 import 'package:minimal_pos/app/modules/ProductPage/views/product_page_item.dart';
 
@@ -18,7 +19,9 @@ class ProductPageView extends GetView<ProductPageController> {
         children: [
           buildNewItem(
             Title: "Add Category",
-            onTap: () {},
+            onTap: () {
+              controller.categoryC.addCategory();
+            },
           ),
           SizedBox(
             height: 10,
@@ -61,5 +64,9 @@ class ProductPageView extends GetView<ProductPageController> {
         Spacer(),
       ],
     );
+  }
+
+  Widget buildAddItem() {
+    return Text("data");
   }
 }
