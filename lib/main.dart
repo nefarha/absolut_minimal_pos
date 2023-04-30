@@ -30,8 +30,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final itemController = Get.put(ItemController());
   final categoryController = Get.put(CategoryController());
+  final itemController = Get.put(ItemController());
   final homeContoller = Get.put(HomeController());
   final productContoller = Get.put(ProductPageController());
 

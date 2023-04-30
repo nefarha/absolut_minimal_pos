@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
+import 'package:minimal_pos/app/data/prefWidget.dart';
 
 class CategoryController extends GetxController with StateMixin<Box> {
   static CategoryController get instance => Get.find();
@@ -9,19 +10,9 @@ class CategoryController extends GetxController with StateMixin<Box> {
   void addCategory() {
     final catTextC = TextEditingController();
     Get.defaultDialog(
-      content: Card(
-        child: Container(
-          padding: EdgeInsets.all(8),
-          width: 400,
-          child: TextField(
-            controller: catTextC,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-      ),
+      title: "Add Category",
+      content: PreferredWidget.customTextfield(
+          textController: catTextC, label: "Category Name"),
       onConfirm: () {
         if (catTextC.text.isNotEmpty && catTextC.text != "") {
           print("sukses");

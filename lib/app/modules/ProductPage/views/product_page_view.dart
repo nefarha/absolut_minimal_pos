@@ -32,7 +32,9 @@ class ProductPageView extends GetView<ProductPageController> {
           ),
           buildNewItem(
             Title: "Add Item",
-            onTap: () {},
+            onTap: () {
+              controller.itemC.addItem();
+            },
           ),
           SizedBox(
             height: 10,
