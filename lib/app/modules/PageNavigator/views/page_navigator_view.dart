@@ -44,6 +44,10 @@ class PageNavigatorView extends GetView<PageNavigatorController> {
             icon: Icon(Icons.menu_book),
             label: Text("Product"),
           ),
+          NavigationRailDestination(
+            icon: Icon(Icons.receipt),
+            label: Text("Orders"),
+          )
         ],
       ),
     );

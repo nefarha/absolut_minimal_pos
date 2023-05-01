@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
 import 'package:minimal_pos/app/data/model/item_model.dart';
+import 'package:minimal_pos/app/data/model/order_model.dart';
 import 'package:minimal_pos/app/modules/home/controllers/home_controller.dart';
 
 class NavigatorSideBar extends GetView<HomeController> {
@@ -94,7 +95,17 @@ class NavigatorSideBar extends GetView<HomeController> {
                 fixedSize: Size(Get.width, 50),
                 backgroundColor: actionColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                OrderModel model = OrderModel(
+                  name: "new",
+                  orders: controller.cartList,
+                  price: controller.totalPrice,
+                  subPrice: controller.subtotalCart.toDouble(),
+                  taxPrice: controller.getTax,
+                );
+
+                controller.orderC.addOrder(model);
+              },
               child: Text(
                 "PLACE ORDER",
                 style: TextStyle(color: secondaryColor),

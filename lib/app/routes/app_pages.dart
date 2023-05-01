@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/OrderPage/bindings/order_page_binding.dart';
+import '../modules/OrderPage/views/order_page_view.dart';
 import '../modules/PageNavigator/bindings/page_navigator_binding.dart';
 import '../modules/PageNavigator/views/page_navigator_view.dart';
 import '../modules/ProductPage/bindings/product_page_binding.dart';
@@ -29,6 +31,11 @@ class AppPages {
       name: _Paths.PRODUCT_PAGE,
       page: () => const ProductPageView(),
       binding: ProductPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAGE,
+      page: () => const OrderPageView(),
+      binding: OrderPageBinding(),
     ),
   ];
 }
