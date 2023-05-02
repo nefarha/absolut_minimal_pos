@@ -97,38 +97,40 @@ class NavigatorSideBar extends GetView<HomeController> {
                 backgroundColor: actionColor,
               ),
               onPressed: () {
-                final nameC = TextEditingController();
-                Get.defaultDialog(
-                  content: PreferredWidget.customTextfield(
-                    textController: nameC,
-                    label: "customer name",
-                  ),
-                  title: "Enter Customer's name",
-                  onConfirm: () async {
-                    var cart = {};
-                    cart.addAll(controller.cartList);
-                    if (nameC.text.isNotEmpty) {
-                      OrderModel model = OrderModel(
-                        name: nameC.text,
-                        orders: cart,
-                        price: controller.totalPrice,
-                        subPrice: controller.subtotalCart.toDouble(),
-                        taxPrice: controller.getTax,
-                        createdAt: DateTime.now(),
-                        id: "${DateTime.now()} + ${nameC.text}",
-                      );
+                if (controller.cartList.length != 0) {
+                  final nameC = TextEditingController();
+                  Get.defaultDialog(
+                    content: PreferredWidget.customTextfield(
+                      textController: nameC,
+                      label: "customer name",
+                    ),
+                    title: "Enter Customer's name",
+                    onConfirm: () async {
+                      var cart = {};
+                      cart.addAll(controller.cartList);
+                      if (nameC.text.isNotEmpty) {
+                        OrderModel model = OrderModel(
+                          name: nameC.text,
+                          orders: cart,
+                          price: controller.totalPrice,
+                          subPrice: controller.subtotalCart.toDouble(),
+                          taxPrice: controller.getTax,
+                          createdAt: DateTime.now(),
+                          id: "${DateTime.now()} + ${nameC.text}",
+                        );
 
-                      await controller.orderC
-                          .addOrder(model)
-                          .then((value) => controller.cartList.clear());
-                      Get.back();
-                    } else {
-                      Get.snackbar('Warning', "must enter name",
-                          backgroundColor: actionColor,
-                          colorText: secondaryColor);
-                    }
-                  },
-                );
+                        await controller.orderC
+                            .addOrder(model)
+                            .then((value) => controller.cartList.clear());
+                        Get.back();
+                      } else {
+                        Get.snackbar('Warning', "must enter name",
+                            backgroundColor: actionColor,
+                            colorText: secondaryColor);
+                      }
+                    },
+                  );
+                }
               },
               child: Text(
                 "PLACE ORDER",
