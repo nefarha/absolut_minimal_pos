@@ -60,7 +60,9 @@ class ProductItem extends GetView<ItemController> {
                               children: [
                                 // EDIT EXISTING DATA
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    controller.editItem(index);
+                                  },
                                   child: Icon(Icons.edit),
                                 ),
                                 SizedBox(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
 import 'package:minimal_pos/app/data/model/item_model.dart';
 import 'package:minimal_pos/app/data/model/order_model.dart';
+import 'package:minimal_pos/app/data/prefWidget.dart';
 import 'package:minimal_pos/app/modules/home/controllers/home_controller.dart';
 
 class NavigatorSideBar extends GetView<HomeController> {
@@ -96,15 +97,38 @@ class NavigatorSideBar extends GetView<HomeController> {
                 backgroundColor: actionColor,
               ),
               onPressed: () {
-                OrderModel model = OrderModel(
-                  name: "new",
-                  orders: controller.cartList,
-                  price: controller.totalPrice,
-                  subPrice: controller.subtotalCart.toDouble(),
-                  taxPrice: controller.getTax,
-                );
+                final nameC = TextEditingController();
+                Get.defaultDialog(
+                  content: PreferredWidget.customTextfield(
+                    textController: nameC,
+                    label: "customer name",
+                  ),
+                  title: "Enter Customer's name",
+                  onConfirm: () async {
+                    var cart = {};
+                    cart.addAll(controller.cartList);
+                    if (nameC.text.isNotEmpty) {
+                      OrderModel model = OrderModel(
+                        name: nameC.text,
+                        orders: cart,
+                        price: controller.totalPrice,
+                        subPrice: controller.subtotalCart.toDouble(),
+                        taxPrice: controller.getTax,
+                        createdAt: DateTime.now(),
+                        id: "${DateTime.now()} + ${nameC.text}",
+                      );
 
-                controller.orderC.addOrder(model);
+                      await controller.orderC
+                          .addOrder(model)
+                          .then((value) => controller.cartList.clear());
+                      Get.back();
+                    } else {
+                      Get.snackbar('Warning', "must enter name",
+                          backgroundColor: actionColor,
+                          colorText: secondaryColor);
+                    }
+                  },
+                );
               },
               child: Text(
                 "PLACE ORDER",
@@ -115,6 +139,5 @@ class NavigatorSideBar extends GetView<HomeController> {
         ),
       ),
     );
-    ;
   }
 }

@@ -22,13 +22,15 @@ class OrderModelAdapter extends TypeAdapter<OrderModel> {
       price: fields[2] as double,
       subPrice: fields[3] as double,
       taxPrice: fields[4] as double,
+      createdAt: fields[5] as DateTime,
+      id: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, OrderModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +40,11 @@ class OrderModelAdapter extends TypeAdapter<OrderModel> {
       ..writeByte(3)
       ..write(obj.subPrice)
       ..writeByte(4)
-      ..write(obj.taxPrice);
+      ..write(obj.taxPrice)
+      ..writeByte(5)
+      ..write(obj.createdAt)
+      ..writeByte(6)
+      ..write(obj.id);
   }
 
   @override

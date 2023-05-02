@@ -20,11 +20,19 @@ class OrderModel {
   @HiveField(4)
   double taxPrice;
 
+  @HiveField(5)
+  DateTime createdAt;
+
+  @HiveField(6)
+  String id;
+
   OrderModel({
     required this.name,
     required this.orders,
     required this.price,
     required this.subPrice,
     required this.taxPrice,
+    required this.createdAt,
+    required this.id,
   });
 }
