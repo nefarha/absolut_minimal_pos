@@ -122,6 +122,8 @@ class NavigatorSideBar extends GetView<HomeController> {
                         await controller.orderC
                             .addOrder(model)
                             .then((value) => controller.cartList.clear());
+                        var a = await controller.createInvoicePDF(model);
+                        print(a.path);
                         Get.back();
                       } else {
                         Get.snackbar('Warning', "must enter name",

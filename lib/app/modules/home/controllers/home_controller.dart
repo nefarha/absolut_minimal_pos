@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:minimal_pos/app/controllers/category_controller.dart';
@@ -6,14 +8,18 @@ import 'package:minimal_pos/app/controllers/order_controller.dart';
 import 'package:minimal_pos/app/data/color_const.dart';
 import 'package:minimal_pos/app/data/model/item_model.dart';
 import 'package:flutter/material.dart';
+import 'package:minimal_pos/app/data/model/order_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
   final categoryC = CategoryController.instance;
   final itemC = ItemController.instance;
   final orderC = OrderController.instance;
 
-  var selectedCategory = "".obs;
   // BELOW IS FOR CREATING VIEW OF ITEM
+  var selectedCategory = "".obs;
   Widget createItemView(ItemModel item) {
     return Card(
       child: Container(
@@ -88,7 +94,35 @@ class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
     );
   }
 
-  /// BELOW THIS IS ORDER CART SECTION
+  // THIS IS TO CREATE PDF INVOICE for order
+  Future<File> createInvoicePDF(OrderModel model) async {
+    final pdf = pw.Document();
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (context) {
+          return pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(model.name),
+                pw.Text(model.orders.toString()),
+                pw.Divider(),
+                pw.Text(model.subPrice.toString()),
+                pw.Text(model.taxPrice.toString()),
+                pw.Text(model.price.toString()),
+              ]);
+        },
+      ),
+    );
+
+    final output = await getExternalStorageDirectory();
+    final file = File("${output!.path}/invoice_${DateTime.now()}.pdf");
+    final bytes = await pdf.save();
+    await file.writeAsBytes(bytes);
+    return file;
+  }
+
+  /// THIS IS ORDER CART SECTION
 
   var cartList = {}.obs;
 
