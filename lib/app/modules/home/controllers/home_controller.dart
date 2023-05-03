@@ -108,18 +108,50 @@ class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
               pw.SizedBox(height: 30),
               // THIS IS TABLE FOR SHOWING ORDER ITEMS
               pw.Table(
-                  children: model.orders.entries.map((e) {
-                ItemModel itemModel = e.key;
-                int value = e.value;
-                return pw.TableRow(children: [
-                  pw.Text(itemModel.name),
-                  pw.Text("${itemModel.price} x $value"),
-                  pw.Text("${itemModel.price * value}"),
-                ]);
-              }).toList()),
-              pw.Divider(),
-              pw.SizedBox(height: 30),
-              // THIS IS FOR SHOWING SUBPRICE, TAX AND TOTAL
+                // THIS IS FOR TABLE BORDER
+
+                border: pw.TableBorder(
+                  horizontalInside: pw.BorderSide(
+                    color: PdfColor.fromHex("#000000"),
+                  ),
+                  bottom: pw.BorderSide(
+                    color: PdfColor.fromHex("#000000"),
+                  ),
+                  verticalInside: pw.BorderSide(
+                    color: PdfColor.fromHex("#000000"),
+                  ),
+                  left: pw.BorderSide(
+                    color: PdfColor.fromHex("#000000"),
+                  ),
+                  right: pw.BorderSide(
+                    color: PdfColor.fromHex("#000000"),
+                  ),
+                  top: pw.BorderSide(
+                    color: PdfColor.fromHex("#000000"),
+                  ),
+                ),
+
+                children: model.orders.entries.map(
+                  (item) {
+                    ItemModel itemModel = item.key;
+                    int countItem = item.value;
+                    return pw.TableRow(
+                      children: [
+                        pw.Padding(
+                            padding: pw.EdgeInsets.all(8),
+                            child: pw.Text(itemModel.name)),
+                        pw.Padding(
+                            padding: pw.EdgeInsets.all(8),
+                            child: pw.Text("${itemModel.price} x $countItem")),
+                        pw.Padding(
+                            padding: pw.EdgeInsets.all(8),
+                            child: pw.Text("${itemModel.price * countItem}")),
+                      ],
+                    );
+                  },
+                ).toList(),
+              ),
+              pw.SizedBox(height: 5),
               pw.Table(
                 children: [
                   pw.TableRow(
@@ -142,6 +174,7 @@ class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
                   ),
                 ],
               ),
+              pw.SizedBox(height: 5),
             ],
           );
         },
@@ -150,6 +183,7 @@ class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
 
     final output = await getExternalStorageDirectory();
     final file = File("${output!.path}/invoice_${DateTime.now()}.pdf");
+    file.delete();
     final bytes = await pdf.save();
     await file.writeAsBytes(bytes);
     return file;

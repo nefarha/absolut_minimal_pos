@@ -52,9 +52,11 @@ class OrderPageView extends GetView<OrderPageController> {
               Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: actionColor),
-                onPressed: () {},
+                onPressed: () {
+                  controller.createPdfReport();
+                },
                 child: Text(
-                  "CLOSE TODAY ORDER",
+                  "EXPORT PDF SALES",
                   style: TextStyle(color: secondaryColor),
                 ),
               )
