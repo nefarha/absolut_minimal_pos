@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
   final categoryController = Get.put(CategoryController());
   final itemController = Get.put(ItemController());
   final orderController = Get.put(OrderController());
+  final orderPageController = Get.put(OrderPageController());
   final homeContoller = Get.put(HomeController());
   final productContoller = Get.put(ProductPageController());
 

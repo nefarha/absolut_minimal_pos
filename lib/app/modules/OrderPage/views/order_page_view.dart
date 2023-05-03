@@ -6,17 +6,49 @@ import 'package:minimal_pos/app/modules/OrderPage/views/order_page_item.dart';
 import '../controllers/order_page_controller.dart';
 
 class OrderPageView extends GetView<OrderPageController> {
-  const OrderPageView({Key? key}) : super(key: key);
+  OrderPageView({Key? key}) : super(key: key);
+  final currentDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Orders",
-          style: Get.textTheme.headlineMedium,
+          "Current Date: ${currentDate.year}-${currentDate.month}-${currentDate.day}",
+          style: Get.textTheme.displaySmall,
         ),
-        OrderPageItem()
+        Divider(),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          children: [
+            Text(
+              "Orders",
+              style: Get.textTheme.headlineMedium,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(3000))
+                    .then((value) => (value != null)
+                        ? controller.pickedDateTime.value = value
+                        : DateTime.now());
+              },
+              child: Obx(
+                () => Text(
+                    'find order on date : ${controller.pickedDateTime.value!.year}-${controller.pickedDateTime.value!.month}-${controller.pickedDateTime.value!.day}'),
+              ),
+            )
+          ],
+        ),
+        OrderPageItem(),
       ],
     );
   }

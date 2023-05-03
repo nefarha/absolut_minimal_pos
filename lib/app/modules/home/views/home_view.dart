@@ -39,15 +39,9 @@ class HomeView extends GetView<HomeController> {
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Item',
-                          style: Get.textTheme.headlineMedium,
-                        ),
-                        buildTextFieldHome(),
-                      ],
+                    Text(
+                      'Item',
+                      style: Get.textTheme.headlineMedium,
                     ),
                     SizedBox(
                       height: 10,
@@ -59,21 +53,6 @@ class HomeView extends GetView<HomeController> {
             ),
             NavigatorSideBar()
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildTextFieldHome() {
-    return Card(
-      child: Container(
-        padding: EdgeInsets.all(8),
-        width: 400,
-        child: TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search),
-            border: InputBorder.none,
-          ),
         ),
       ),
     );

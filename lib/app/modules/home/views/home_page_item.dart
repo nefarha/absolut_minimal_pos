@@ -17,88 +17,37 @@ class HomePageItem extends GetView<ItemController> {
         valueListenable: itemBox!.listenable(),
         builder: (context, value, child) => (value.length > 0)
             ? Expanded(
-                child: GridView(
-                  scrollDirection: Axis.horizontal,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    crossAxisCount: 2,
+                child: Obx(
+                  () => GridView(
+                    scrollDirection: Axis.horizontal,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 2,
+                    ),
+                    children:
+                        // THIS SECTION IS TO VIEW ITEM
+                        (() {
+                      List<Widget> widgetList = [];
+                      if (homeC.selectedCategory.value.isNotEmpty) {
+                        itemBox.values.map(
+                          (item) {
+                            if (item.category == homeC.selectedCategory.value)
+                              widgetList.add(homeC.createItemView(item));
+                          },
+                        ).toList();
+                      } else {
+                        itemBox.values
+                            .map(
+                              (item) => widgetList.add(
+                                homeC.createItemView(item),
+                              ),
+                            )
+                            .toList();
+                      }
+                      return widgetList;
+                    }()),
                   ),
-                  children: itemBox.values
-                      .map(
-                        (item) => Card(
-                          child: Container(
-                            height: 100,
-                            width: 200,
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // SHOW ITEM CATEGORY ON TOP
-                                Text(
-                                  item.category,
-                                  style: Get.textTheme.bodySmall,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                // THIS IS ITEM NAME
-                                Text(
-                                  item.name,
-                                  style: Get.textTheme.titleLarge,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                // THIS IS ITEM PRICE
-                                Text(
-                                  "\$${item.price}",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Spacer(),
-                                // THIS IS ACTION BUTTON ON ITEM CARD
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    // THIS IS FOR SUBSTRACT OR REMOVE ITEM FROM CART
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: actionColor,
-                                      ),
-                                      onPressed: () {
-                                        homeC.removeFromCart(item);
-                                      },
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: secondaryColor,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    // THIS IS FOR ADDING ITEM TO CART
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: actionColor,
-                                      ),
-                                      onPressed: () {
-                                        homeC.addCart(item);
-                                      },
-                                      child: Icon(
-                                        Icons.add,
-                                        color: secondaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
                 ),
               )
             : Center(
