@@ -99,18 +99,51 @@ class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
-        pageFormat: PdfPageFormat.a4,
+        pageFormat: PdfPageFormat.a6,
         build: (context) {
           return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text(model.name),
-                pw.Text(model.orders.toString()),
-                pw.Divider(),
-                pw.Text(model.subPrice.toString()),
-                pw.Text(model.taxPrice.toString()),
-                pw.Text(model.price.toString()),
-              ]);
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(model.name.toUpperCase()),
+              pw.SizedBox(height: 30),
+              // THIS IS TABLE FOR SHOWING ORDER ITEMS
+              pw.Table(
+                  children: model.orders.entries.map((e) {
+                ItemModel itemModel = e.key;
+                int value = e.value;
+                return pw.TableRow(children: [
+                  pw.Text(itemModel.name),
+                  pw.Text("${itemModel.price} x $value"),
+                  pw.Text("${itemModel.price * value}"),
+                ]);
+              }).toList()),
+              pw.Divider(),
+              pw.SizedBox(height: 30),
+              // THIS IS FOR SHOWING SUBPRICE, TAX AND TOTAL
+              pw.Table(
+                children: [
+                  pw.TableRow(
+                    children: [
+                      pw.Text("Subprice"),
+                      pw.Text(model.subPrice.toString()),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Text("Tax 10%"),
+                      pw.Text(model.taxPrice.toString()),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Text("Total"),
+                      pw.Text(model.price.toString()),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          );
         },
       ),
     );
