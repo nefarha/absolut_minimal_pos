@@ -183,7 +183,9 @@ class HomeController extends GetxController with StateMixin<Box<ItemModel>> {
 
     final output = await getExternalStorageDirectory();
     final file = File("${output!.path}/invoice_${DateTime.now()}.pdf");
-    file.delete();
+    if (await file.exists()) {
+      file.delete();
+    }
     final bytes = await pdf.save();
     await file.writeAsBytes(bytes);
     return file;

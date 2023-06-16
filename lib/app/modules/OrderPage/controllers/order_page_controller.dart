@@ -51,7 +51,10 @@ class OrderPageController extends GetxController
     final output = await DownloadsPath.downloadsDirectory();
     final file = File(
         "${output!.path}/Sales_Report_${pickedDateTime.value!.year}-${pickedDateTime.value!.month}-${pickedDateTime.value!.day}.pdf");
-    file.delete();
+
+    if (await file.exists()) {
+      file.delete();
+    }
     final bytes = await pdf.save();
     await file.writeAsBytes(bytes);
     return file;
